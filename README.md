@@ -1,16 +1,24 @@
-# lockin
+# LockIn
 
-Routine app
+Routine engine for skin, gym, food, and meds.
 
-## Getting Started
+## What it does (MVP)
+- Day reset: 03:00 AM
+- Morning routine: triggered on first phone unlock after reset
+- Lunch tracking: Start Lunch / End Lunch
+- Tue/Wed/Thu: Azifast 500mg reminder after End Lunch (Taken/Snooze/Skip)
+- Gym tracking: Start Gym / End Gym (Mon–Sat)
+- Night routine chain after End Gym:
+    - Cleanser → BPO 2.5% (2h) → wash with water → Azibrite overnight
+- Monthly derm sessions:
+    - Manual date entry
+    - Blackout D−5..D+5 blocks BPO/Azibrite (hard block)
+- “Show Today’s Summary” button
+- Food targets + water tracking (daily totals)
+- Offline-first
+- Monthly export: JSON to Drive, PDF for dermatologist & gym
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Dev notes
+See:
+- `LOCKIN_SPEC.md` (rules)
+- `CURRENT_STEP.md` (current progress)
