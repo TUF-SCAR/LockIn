@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/time/day_reset.dart';
+import '../../core/notifications/notification_service.dart';
 
 enum SessionState { notStarted, running, ended }
 
@@ -63,10 +64,20 @@ class _TodayScreenState extends State<TodayScreen> {
     }
   }
 
-  void endLunch() async {
+  Future<void> endLunch() async {
     if (lunchState == SessionState.running) {
       setState(() => lunchState = SessionState.ended);
       await _saveStates();
+
+      final now = DateTime.now();
+      final isAziDay = now.weekday == DateTime.tuesday ||
+          now.weekday == DateTime.wednesday ||
+          now.weekday == DateTime.thursday;
+
+      if (isAziDay) {
+        await NotificationService.instance.requestPermissionIfNeeded();
+        await NotificationService.instance.showAzifastNow();
+      }
     }
   }
 
