@@ -95,6 +95,16 @@ class _TodayScreenState extends State<TodayScreen> {
     }
   }
 
+  void resetTodayDebug() async {
+    await DayReset.forceResetToday();
+    setState(() {
+      lunchState = SessionState.notStarted;
+      gymState = SessionState.notStarted;
+      // Optional: keep currentDayKey as-is, or reload state:
+      // loading = true;
+    });
+  }
+
   String labelFor(SessionState state) {
     switch (state) {
       case SessionState.notStarted:
@@ -118,7 +128,6 @@ class _TodayScreenState extends State<TodayScreen> {
   }
 
   bool isAzifastDay(DateTime now) {
-    // Tue=2, Wed=3, Thu=4 in Dart
     return now.weekday == DateTime.tuesday ||
         now.weekday == DateTime.wednesday ||
         now.weekday == DateTime.thursday;
@@ -142,7 +151,10 @@ class _TodayScreenState extends State<TodayScreen> {
             Text('Day key: $currentDayKey (reset @ 03:00 AM)'),
             const SizedBox(height: 16),
 
-            Text('Lunch: ${labelFor(lunchState)}', style: const TextStyle(fontSize: 16)),
+            Text(
+              'Lunch: ${labelFor(lunchState)}',
+              style: const TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: lunchState == SessionState.notStarted ? startLunch : null,
@@ -156,7 +168,10 @@ class _TodayScreenState extends State<TodayScreen> {
 
             const SizedBox(height: 32),
 
-            Text('Gym: ${labelFor(gymState)}', style: const TextStyle(fontSize: 16)),
+            Text(
+              'Gym: ${labelFor(gymState)}',
+              style: const TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: gymState == SessionState.notStarted ? startGym : null,
@@ -203,6 +218,24 @@ class _TodayScreenState extends State<TodayScreen> {
                 );
               },
               child: const Text("Show Today's Summary"),
+            ),
+
+            OutlinedButton(
+              onPressed: () async {
+                await NotificationService.instance.requestPermissionIfNeeded();
+                await NotificationService.instance.scheduleAzifastSnooze(minutes: 1);
+              },
+              child: const Text('Test Snooze (1 min)'),
+            ),
+
+            const SizedBox(height: 16),
+
+            TextButton(
+              onPressed: resetTodayDebug,
+              child: const Text(
+                'RESET TODAY (DEBUG)',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
         ),
